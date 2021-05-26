@@ -8,7 +8,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
-mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true});
+mongoose.connect("mongodb+srv://admin-ed:55555@cluster0.bnbjc.mongodb.net/todolistDB", {useNewUrlParser: true}, { useUnifiedTopology: true });
 
 // create the item data layout
 const itemsSchema = new mongoose.Schema({
@@ -62,9 +62,6 @@ app.get("/", function (req, res) {
 
 app.get("/:customListName", function(req, res){
     const customListName = _.capitalize(req.params.customListName);
-
-
-
 
     List.findOne({name: customListName}, function(error, foundList){
         if (!error){
@@ -127,7 +124,11 @@ app.post("/delete", function(req, res){
 
 });
 
+let port = process.env.PORT;
+if (port == null || port == ""){
+    port = 3000;
+}
 
-app.listen(3000, function () {
-    console.log("Listening to port 3000");
+app.listen(port, function () {
+    console.log("Server has started successfully");
 });
